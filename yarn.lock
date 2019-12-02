@@ -2,16 +2,25 @@
 # yarn lockfile v1
 
 
-"@accounts/client-password@0.19.0":
-  version "0.19.0"
-  resolved "https://registry.yarnpkg.com/@accounts/client-password/-/client-password-0.19.0.tgz#62fad3e20f6768d141e0c075f5c48b32e3a6f0c0"
-  integrity sha512-y8JUElr/n0PteOZMRXVDfxZmJRze97tIqANHkP1wyXs+cCebrz5PcVzJbs3dbNXb4AFwKcMPnQxibjP7un/5ag==
+"@accounts/client-password@0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@accounts/client-password/-/client-password-0.20.0.tgz#7e320d7fd919e8e52aefcca7d3a040d4b9ac900c"
+  integrity sha512-5z2ZeJwo65nDdVJNMPCD/aDsjo/EqUp+gYAISMqRX6v90sMFR3FQ1IzCXs7ityKVRIIeLipYk0xt9F8U1Ax+VA==
   dependencies:
-    "@accounts/client" "^0.19.0"
-    "@accounts/types" "^0.19.0"
+    "@accounts/client" "^0.20.0"
+    "@accounts/types" "^0.20.0"
     tslib "1.10.0"
 
-"@accounts/client@0.19.0", "@accounts/client@^0.19.0":
+"@accounts/client@0.20.0", "@accounts/client@^0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@accounts/client/-/client-0.20.0.tgz#812d836280677c258352b91978a0005fd9c0d960"
+  integrity sha512-+vk5pO3J1ieCNbGsHM7aPW550RsfTBPgJFae6HPCqlmMhr/IrMYe8PVdJSOS9EpH/SmhTdPHWYABH5h8pz3x5w==
+  dependencies:
+    "@accounts/types" "^0.20.0"
+    jwt-decode "2.2.0"
+    tslib "1.10.0"
+
+"@accounts/client@^0.19.0":
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/@accounts/client/-/client-0.19.0.tgz#b088fa55046b37d89eeeb8893a1d0b979cc9fab2"
   integrity sha512-S6IOmX7ufg07BP+k5ep2vIPti4q5DkhFi4HZBmrLuLiHWZvJFr/TY32W4sMh5F5qXrFnaAvoyu2b9LzjMUBgQw==
@@ -20,12 +29,12 @@
     jwt-decode "2.2.0"
     tslib "1.10.0"
 
-"@accounts/database-manager@^0.19.0":
-  version "0.19.0"
-  resolved "https://registry.yarnpkg.com/@accounts/database-manager/-/database-manager-0.19.0.tgz#5653af0b58fd72cea41fc4d6bac460589e693d20"
-  integrity sha512-v1aGKi9Yvivv4uLbfPdERGnYgs3++Y5+6qU53TeXUdaiPIBks8SRv1hj4guNNP6qmQ5wDX94HjEA0uClKlzarw==
+"@accounts/database-manager@^0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@accounts/database-manager/-/database-manager-0.20.0.tgz#52cfcc208c8e38f78216b3e5aecd4fed67f746e6"
+  integrity sha512-gnERo5eyfTaTnLO8zjWFadxC4F0e6n6XY7oGJh5QWdl9xVfzb48T0WpHL2tFGp+VcE4AM0izt/upRLIpsvo/xw==
   dependencies:
-    "@accounts/types" "^0.19.0"
+    "@accounts/types" "^0.20.0"
     tslib "1.10.0"
 
 "@accounts/graphql-api@^0.19.0":
@@ -57,14 +66,14 @@
     lodash "^4.17.15"
     tslib "1.10.0"
 
-"@accounts/server@^0.19.0":
-  version "0.19.0"
-  resolved "https://registry.yarnpkg.com/@accounts/server/-/server-0.19.0.tgz#701aaa2f874009a29aa210bb298b4bddb9d6b486"
-  integrity sha512-xdG/L1BnZLIdkU2Cf3+x2bO0oxbwMzQjbNotXHIJEKZ5fILJ9ZGFL7UF5w2OaTk5sMvsCtJNOF//lueH27Hjww==
+"@accounts/server@^0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@accounts/server/-/server-0.20.0.tgz#0a3fd206b7a533d53066147e7d63edf446222381"
+  integrity sha512-a6m6Gp1MYlwTSkz9CBFY/LyYG1/9gDWZflAvQoemnWLOjTHTBe8LnKYf8dEINcTZEz7xjIrHKABxk04pQ5uNeg==
   dependencies:
-    "@accounts/types" "^0.19.0"
-    "@types/jsonwebtoken" "8.3.3"
-    emittery "0.4.1"
+    "@accounts/types" "^0.20.0"
+    "@types/jsonwebtoken" "8.3.5"
+    emittery "0.5.1"
     jsonwebtoken "8.5.1"
     jwt-decode "2.2.0"
     lodash "4.17.15"
@@ -82,21 +91,28 @@
     speakeasy "^2.0.0"
     tslib "1.10.0"
 
-"@accounts/typeorm@^0.19.0":
-  version "0.19.0"
-  resolved "https://registry.yarnpkg.com/@accounts/typeorm/-/typeorm-0.19.0.tgz#043f896b4121d5f3a3fdeccd5874c7f899b47d5a"
-  integrity sha512-gYyTchFL1hL0bMlW5Ms2RDTFmp+Tha2BYGEM+anRqv0inZCG+vatDrdpn2fAXY94e5mvXpcLwYJiZ38tT6kpKg==
+"@accounts/typeorm@^0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@accounts/typeorm/-/typeorm-0.20.0.tgz#8ccd8af78d1987c6efca94b0738367d6065870b7"
+  integrity sha512-HzEgaXMKwZmxKyorY7DYqiBehCCqYkfpW94Y6RVFBvllQYhyl6ajvLlQDRMT+qSnLd3cO/qXZED5KklcQZ6elA==
   dependencies:
-    "@accounts/types" "^0.19.0"
+    "@accounts/types" "^0.20.0"
     lodash "^4.17.15"
     reflect-metadata "^0.1.13"
     tslib "1.10.0"
-    typeorm "^0.2.17"
+    typeorm "^0.2.18"
 
 "@accounts/types@^0.19.0":
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/@accounts/types/-/types-0.19.0.tgz#283e5a236ad79e37a017ef843254ff6699ccbe78"
   integrity sha512-Su72qBZN2SpNrlC5yIFg/eyV18dEIDvfKyqmiPNlwFlIFAzNUoQCFr9i3+r/F5Zz3DFzvHb7dYFRCzFgtozPCg==
+  dependencies:
+    tslib "1.10.0"
+
+"@accounts/types@^0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@accounts/types/-/types-0.20.0.tgz#459ff9bd85166eb00563d8bd08dcd124a2c7507f"
+  integrity sha512-dnBX5ElhWVqgvEWLP6AIYB9Wve92d/mBHpCko3vpLRW+7aB0r06fEEUI+3/E9QrgvKHtCWu/Vwokgek2/DuNIg==
   dependencies:
     tslib "1.10.0"
 
@@ -2717,10 +2733,10 @@
   dependencies:
     jest-diff "^24.3.0"
 
-"@types/jsonwebtoken@8.3.3":
-  version "8.3.3"
-  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.3.3.tgz#eafeea8239c74b02263d204c0e1175d5cd0bb85f"
-  integrity sha512-mofwpvFbm2AUxD5mg4iQPc2o/+ubM200R/L86kR17SeC99jM3gEnB9hy16ln3kZkxM5LnGpDJclxeUNEHhehng==
+"@types/jsonwebtoken@8.3.5":
+  version "8.3.5"
+  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.3.5.tgz#ff9be1151a844095df1ff5f723651298c2c07659"
+  integrity sha512-VGM1gb+LwsQ5EPevvbvdnKncajBdYqNcrvixBif1BsiDQiSF1q+j4bBTvKC6Bt9n2kqNSx+yNTY2TVJ360E7EQ==
   dependencies:
     "@types/node" "*"
 
@@ -6873,10 +6889,10 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-emittery@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.4.1.tgz#abe9d3297389ba424ac87e53d1c701962ce7433d"
-  integrity sha512-r4eRSeStEGf6M5SKdrQhhLK5bOwOBxQhIE3YSTnZE3GpKiLfnnhE+tPtrJE79+eDJgm39BM6LSoI8SCx4HbwlQ==
+emittery@0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.5.1.tgz#9fbbf57e9aecc258d727d78858a598eb05ea5c96"
+  integrity sha512-sYZXNHH9PhTfs98ROEFVC3bLiR8KSqXQsEHIwZ9J6H0RaQObC3JYq4G8IvDd0b45/LxfGKYBpmaUN4LiKytaNw==
 
 emoji-regex@^6.5.1:
   version "6.5.1"
@@ -18418,10 +18434,30 @@ typeorm-typedi-extensions@^0.2.0:
   resolved "https://registry.yarnpkg.com/typeorm-typedi-extensions/-/typeorm-typedi-extensions-0.2.3.tgz#94fca2656206d771bf6d2242f5aab570511188e8"
   integrity sha512-T9i1NvRZNjPn9Jb8oT772ihfn6PwdqDVpzPCtKSqjkZGOgXrCkdyD3dDrzfMaoWJ1afU58bVx2CMb95FzT42Ow==
 
-typeorm@^0.2.0, typeorm@^0.2.17:
+typeorm@^0.2.0:
   version "0.2.19"
   resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.2.19.tgz#a0cff0714180e5720df157df02c5759a1a646dc3"
   integrity sha512-xKVx/W41zckQ7v8WYcpRhSKpjXDKG/Jgjy0RWvYelR8ZnfyblNRL12jF4P8tIhwXv6l5t01s7HEc9lR+zb6Gtg==
+  dependencies:
+    app-root-path "^2.0.1"
+    buffer "^5.1.0"
+    chalk "^2.4.2"
+    cli-highlight "^2.0.0"
+    debug "^4.1.1"
+    dotenv "^6.2.0"
+    glob "^7.1.2"
+    js-yaml "^3.13.1"
+    mkdirp "^0.5.1"
+    reflect-metadata "^0.1.13"
+    tslib "^1.9.0"
+    xml2js "^0.4.17"
+    yargonaut "^1.1.2"
+    yargs "^13.2.1"
+
+typeorm@^0.2.18:
+  version "0.2.20"
+  resolved "https://registry.yarnpkg.com/typeorm/-/typeorm-0.2.20.tgz#efb60f2e55a7d08fc365f281ec2a71c87a9ebba5"
+  integrity sha512-VxB+9qH8D+PM19MIx18Zs3Fqv/ZINnnQvUGmBEiLYDrB9etdSdamgSTCIhWdFNndeJ6ldH4jbD0Z6HWsepMPlA==
   dependencies:
     app-root-path "^2.0.1"
     buffer "^5.1.0"
