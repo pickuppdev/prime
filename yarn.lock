@@ -20,6 +20,15 @@
     jwt-decode "2.2.0"
     tslib "1.10.0"
 
+"@accounts/client@^0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@accounts/client/-/client-0.20.0.tgz#812d836280677c258352b91978a0005fd9c0d960"
+  integrity sha512-+vk5pO3J1ieCNbGsHM7aPW550RsfTBPgJFae6HPCqlmMhr/IrMYe8PVdJSOS9EpH/SmhTdPHWYABH5h8pz3x5w==
+  dependencies:
+    "@accounts/types" "^0.20.0"
+    jwt-decode "2.2.0"
+    tslib "1.10.0"
+
 "@accounts/database-manager@^0.19.0":
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/@accounts/database-manager/-/database-manager-0.19.0.tgz#5653af0b58fd72cea41fc4d6bac460589e693d20"
@@ -37,13 +46,13 @@
     request-ip "2.1.3"
     tslib "1.10.0"
 
-"@accounts/graphql-client@0.19.0":
-  version "0.19.0"
-  resolved "https://registry.yarnpkg.com/@accounts/graphql-client/-/graphql-client-0.19.0.tgz#703227ccee8d5c33cf861d276e44d74f21be6e90"
-  integrity sha512-BVWpkFGrBsyvO7r5lEB2vLnY2rLHQmbFxRLmJF8hGp9j7/WyFalUYJ8MuIUlSMl5Bh4BTgj8lmpAIUPnyB7FIA==
+"@accounts/graphql-client@0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@accounts/graphql-client/-/graphql-client-0.20.0.tgz#d2eb9c686e49323642a745b11781bcd6274b5a28"
+  integrity sha512-0tvRJEmlynAqKBrMGa4HrFb44DnZ539ympWFs3Y1s5u2p1aNBX/5xT/WjICTImhE+1wDhlIugwhSKreBuWH6LQ==
   dependencies:
-    "@accounts/client" "^0.19.0"
-    "@accounts/types" "^0.19.0"
+    "@accounts/client" "^0.20.0"
+    "@accounts/types" "^0.20.0"
     graphql-tag "^2.10.0"
     tslib "1.10.0"
 
@@ -97,6 +106,13 @@
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/@accounts/types/-/types-0.19.0.tgz#283e5a236ad79e37a017ef843254ff6699ccbe78"
   integrity sha512-Su72qBZN2SpNrlC5yIFg/eyV18dEIDvfKyqmiPNlwFlIFAzNUoQCFr9i3+r/F5Zz3DFzvHb7dYFRCzFgtozPCg==
+  dependencies:
+    tslib "1.10.0"
+
+"@accounts/types@^0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@accounts/types/-/types-0.20.0.tgz#459ff9bd85166eb00563d8bd08dcd124a2c7507f"
+  integrity sha512-dnBX5ElhWVqgvEWLP6AIYB9Wve92d/mBHpCko3vpLRW+7aB0r06fEEUI+3/E9QrgvKHtCWu/Vwokgek2/DuNIg==
   dependencies:
     tslib "1.10.0"
 
