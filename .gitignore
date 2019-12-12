@@ -19,3 +19,6 @@ packages/*/package-lock.json
 packages/*/*.tgz
 packages/prime-ui/build
 packages/*/junit.xml
+
+Dockerfile
+package.deploy.json

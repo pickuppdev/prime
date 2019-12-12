@@ -1,0 +1,7 @@
+node_modules
+.git
+.circleci
+docs
+__tests__
+packages/prime-cli
+packages/prime-react
