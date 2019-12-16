@@ -8,6 +8,7 @@ import { UploadChangeParam } from "antd/lib/upload";
 import { UploadFile } from "antd/lib/upload/interface";
 
 import CloudinaryUpload from './Upload/CloudinaryUpload'
+import S3Upload from './Upload/S3Upload'
 
 const CROP_SIZE = 800;
 
@@ -196,6 +197,16 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps> {
   public renderUpload() {
     const { file } = this.state;
     const { env } = this.props.stores.Settings
+    if (env.STORAGE_VENDOR && env.STORAGE_VENDOR === 's3') {
+      return (
+        <S3Upload
+            file={file}
+            onChange={this.onChange}
+            onPreview={this.onPreview}
+            env={env}
+        />
+      )
+    }
 
     return (
       <CloudinaryUpload
