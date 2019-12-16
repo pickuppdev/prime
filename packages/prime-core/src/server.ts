@@ -94,6 +94,7 @@ export const createServer = async ({ port, connection }: ServerConfig) => {
       return context(ctx);
     },
     schema,
+    // @ts-ignore
     formatResponse(response: any, resolver: ResolverData<Context>) {
       Container.reset(resolver.context.requestId);
       return response;
