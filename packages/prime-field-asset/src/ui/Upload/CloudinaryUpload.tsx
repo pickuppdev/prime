@@ -61,11 +61,9 @@ export default class CloudinaryUpload extends React.PureComponent<Props> {
     });
   };
 
-
   public render() {
     const { file, onPreview, onChange } = this.props;
     const { uploadPayload } = this.state;
-
 
     return (
       <Upload
