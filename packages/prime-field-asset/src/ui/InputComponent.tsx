@@ -1,11 +1,13 @@
 import { PrimeFieldProps } from '@primecms/field';
-import { Button, Dropdown, Form, Icon, Menu, Modal, Upload } from 'antd';
+import { Button, Dropdown, Form, Menu, Modal } from 'antd';
 import { ClickParam } from 'antd/lib/menu';
-import { UploadChangeParam } from 'antd/lib/upload';
-import { UploadFile } from 'antd/lib/upload/interface';
 import { get } from 'lodash';
 import React from 'react';
 import Cropper from 'react-easy-crop';
+import { UploadChangeParam } from "antd/lib/upload";
+import { UploadFile } from "antd/lib/upload/interface";
+
+import CloudinaryUpload from './Upload/CloudinaryUpload'
 
 const CROP_SIZE = 800;
 
@@ -47,18 +49,6 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps> {
     file: getInitialFile(get(this.props, 'initialValue')),
   };
 
-  public url = (() => {
-    try {
-      return new URL(
-        String(this.props.stores.Settings.env.CLOUDINARY_URL).replace(/^cloudinary/, 'http')
-      );
-    } catch (err) {
-      console.warn('No "CLOUDINARY_URL" set'); // tslint:disable-line no-console
-    }
-
-    return new URL('http://localhost');
-  })();
-
   private cropPixels = { x: 0, y: 0, width: 0, height: 0 };
 
   public componentDidMount() {
@@ -72,36 +62,6 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps> {
       });
     }
   }
-
-  public onBeforeUpload = async () => {
-    const { username, password } = this.url;
-
-    const timestamp = Math.round(Date.now() / 1000);
-    const params = {
-      upload_preset: 'prime-asset',
-      image_metadata: true,
-      timestamp,
-    };
-
-    const toSign = Object.entries(params)
-      .filter(([key, value]) => value && String(value).length > 0)
-      .map(([key, value]: [string, any]) => `${key}=${[].concat(value || []).join(',')}`)
-      .sort()
-      .join('&');
-
-    const msgBuffer = new TextEncoder().encode(toSign + password);
-    const hashBuffer = await crypto.subtle.digest('SHA-1', msgBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => `00${b.toString(16)}`.slice(-2)).join('');
-
-    this.setState({
-      uploadPayload: {
-        signature: hashHex,
-        api_key: username,
-        ...params,
-      },
-    });
-  };
 
   public onChange = (e: UploadChangeParam) => {
     const { form, path } = this.props;
@@ -233,10 +193,24 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps> {
     this.setState({ cropVisible: false });
   };
 
+  public renderUpload() {
+    const { file } = this.state;
+    const { env } = this.props.stores.Settings
+
+    return (
+      <CloudinaryUpload
+        file={file}
+        onChange={this.onChange}
+        onPreview={this.onPreview}
+        env={env}
+      />
+    )
+  }
+
   // tslint:disable-next-line max-func-body-length
   public render() {
     const { form, field, path, initialValue } = this.props;
-    const { previewVisible, cropVisible, cropOffset, cropZoom, uploadPayload, file } = this.state;
+    const { previewVisible, cropVisible, cropOffset, cropZoom, file } = this.state;
     const { getFieldDecorator } = form;
     const initialCrops = get(initialValue, 'crops', []);
     const crops = get(field.options, 'crops', []).map((crop: { name: string }) => ({
@@ -262,24 +236,7 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps> {
         <Form.Item label={field.title}>
           {getFieldDecorator(`${path}.url`, { initialValue: get(file, 'url', '') })(
             <div style={{ width: 112, height: 112 }} key="noop">
-              <Upload
-                name="file"
-                action={`https://api.cloudinary.com/v1_1/${this.url.hostname}/upload`}
-                data={uploadPayload}
-                listType="picture-card"
-                multiple={false}
-                beforeUpload={this.onBeforeUpload}
-                onChange={this.onChange}
-                onPreview={this.onPreview}
-                fileList={((file ? [file] : []) as unknown) as UploadFile[]}
-              >
-                {!file && (
-                  <div>
-                    <Icon type="plus" />
-                    <div className="ant-upload-text">Upload</div>
-                  </div>
-                )}
-              </Upload>
+              {this.renderUpload()}
             </div>
           )}
 
