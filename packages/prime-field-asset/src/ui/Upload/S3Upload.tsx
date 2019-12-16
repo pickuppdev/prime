@@ -11,9 +11,9 @@ type Props = {
   env: {
     AWS_ACCESS_KEY_ID: string,
     AWS_SECRET_ACCESS_KEY: string,
-    AWS_REGION: string,
-    AWS_BUCKET: string,
-    S3_LINK_EXPIRY: Date,
+    S3_REGION: string,
+    S3_BUCKET: string,
+    S3_LINK_EXPIRY: string,
   }
 }
 
@@ -21,7 +21,7 @@ export default class S3Upload extends React.PureComponent<Props> {
   public componentDidMount() {
     const { env } = this.props;
     AWS.config.update({
-      region: env.AWS_REGION,
+      region: env.S3_REGION,
       credentials: new AWS.Credentials({
         accessKeyId: env.AWS_ACCESS_KEY_ID,
         secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
@@ -36,11 +36,12 @@ export default class S3Upload extends React.PureComponent<Props> {
     const prefix = randomBytes(20).toString('hex')
     const fileName = `${prefix}_${file.name}`
     const data = await s3.upload({
-      Bucket: env.AWS_BUCKET,
+      Bucket: env.S3_BUCKET,
       Key: `prime/${fileName}`,
       ContentType: file.type,
       ACL: 'public-read',
-      Expires: env.S3_LINK_EXPIRY,
+      // @ts-ignore
+      Expires: parseInt(env.S3_LINK_EXPIRY),
       Body: file,
     }).promise();
 
