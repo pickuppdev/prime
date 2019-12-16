@@ -1,7 +1,8 @@
 import React from 'react'
-import {UploadChangeParam, UploadFile} from "antd/lib/upload/interface";
+import AWS from 'aws-sdk';
+import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import { Icon, Upload } from 'antd';
-const AWS = require('aws-sdk');
+import { randomBytes } from 'crypto';
 
 type Props = {
   file: any,
@@ -12,12 +13,13 @@ type Props = {
     AWS_SECRET_ACCESS_KEY: string,
     AWS_REGION: string,
     AWS_BUCKET: string,
+    S3_LINK_EXPIRY: Date,
   }
 }
 
 export default class S3Upload extends React.PureComponent<Props> {
   public componentDidMount() {
-    const { env } = this.props
+    const { env } = this.props;
     AWS.config.update({
       region: env.AWS_REGION,
       credentials: new AWS.Credentials({
@@ -29,12 +31,16 @@ export default class S3Upload extends React.PureComponent<Props> {
 
   public customRequest = async ({ file, onSuccess }) => {
     const s3 = new AWS.S3;
+    const { env } = this.props
+
+    const prefix = randomBytes(20).toString('hex')
+    const fileName = `${prefix}_${file.name}`
     const data = await s3.upload({
-      Bucket: this.props.env.AWS_BUCKET,
-      Key: `prime/image.png`,
+      Bucket: env.AWS_BUCKET,
+      Key: `prime/${fileName}`,
       ContentType: file.type,
       ACL: 'public-read',
-      Expires: 43200,
+      Expires: env.S3_LINK_EXPIRY,
       Body: file,
     }).promise();
 

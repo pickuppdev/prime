@@ -21,12 +21,13 @@ export class PrimeFieldAsset extends PrimeField {
   };
 
   public static env = [
+    'STORAGE_VENDOR',
     'CLOUDINARY_URL',
     'AWS_ACCESS_KEY_ID',
     'AWS_SECRET_ACCESS_KEY',
-    'AWS_REGION',
-    'AWS_BUCKET',
-    'STORAGE_VENDOR',
+    'S3_REGION',
+    'S3_BUCKET',
+    'S3_LINK_EXPIRY',
   ];
 
   public outputType(context: PrimeFieldContext) {
