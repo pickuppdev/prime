@@ -105,7 +105,7 @@ export class InputComponent extends React.Component<PrimeFieldProps, IState> {
             })(
               <TreeSelect
                 key={(document && document.documentId) || 'picker'}
-                style={{ width: 300 }}
+                style={{ width: '100%' }}
                 defaultValue={this.defaultValue}
                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                 showSearch={true}
