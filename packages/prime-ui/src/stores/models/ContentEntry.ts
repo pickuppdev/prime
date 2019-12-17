@@ -75,8 +75,8 @@ export const ContentEntry = types
           updatedAt: new Date(data.updatedAt),
         });
       } else if (self.versions.length > 0) {
-        (self.versions[0].publishedAt = data.publishedAt ? new Date(data.publishedAt) : null),
-          (self.versions[0].updatedAt = new Date(data.updatedAt));
+        self.versions[0].publishedAt = data.publishedAt ? new Date(data.publishedAt) : null;
+        self.versions[0].updatedAt = new Date(data.updatedAt);
       }
       self.id = data.id;
       self.schemaId = data.schemaId;

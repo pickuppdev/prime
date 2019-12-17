@@ -41,7 +41,7 @@ export class UserResolver {
   @Query(returns => User)
   public async getUser(@Ctx() context: Context) {
     const user = await this.userRepository.findOneOrFail(context.user.id);
-    const meta = await user.meta();
+    const meta = await this.meta(user);
     return {
       ...context.user,
       meta,
@@ -60,7 +60,7 @@ export class UserResolver {
     });
     (result as any).resolveNode = async user => {
       user.emails = await this.userEmailRepository.find({ user });
-      const meta = await user.meta();
+      const meta = await this.meta(user);
       return {
         ...user,
         meta,
@@ -131,7 +131,7 @@ export class UserResolver {
     @Ctx() context: Context
   ) {
     const user = await this.userRepository.findOneOrFail(id);
-    const meta = await user.meta();
+    const meta = await this.meta(user);
     meta.profile = input.profile;
     context.ability.throwUnlessCan('update', user);
     await this.userRepository.save(user);
@@ -172,6 +172,12 @@ export class UserResolver {
 
   @FieldResolver(returns => UserMeta)
   public async meta(@Root() user: User): Promise<UserMeta> {
-    return user.meta();
+    let meta = await this.userMetaRepository.findOne(user.id);
+    if (!meta) {
+      meta = new UserMeta();
+      meta.id = user.id;
+      await this.userMetaRepository.save(meta);
+    }
+    return meta;
   }
 }
