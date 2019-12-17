@@ -74,6 +74,11 @@
     }
   }
 
+  .prime-slice-item-header .ant-form-item-label {
+    line-height: 40px;
+    margin: 0;
+  }
+
   .ant-form-item-control {
     line-height: normal;
 
@@ -225,15 +230,26 @@
     margin-right: 3px;
 
     .ant-card-body {
-      padding: @spacing;
-      padding-bottom: 0;
+      padding: 0 @spacing;
     }
+  }
+
+  .prime-slice-item-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+
+      .prime-slice-item-actions {
+        position: relative;
+        top: 0;
+        right: 0;
+      }
   }
 
   .prime-slice-item-actions {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 2px;
+    right: 2px;
 
     z-index: 10;
 
