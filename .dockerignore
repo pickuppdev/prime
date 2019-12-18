@@ -3,5 +3,7 @@ node_modules
 .circleci
 docs
 __tests__
+packages/*/__tests__
 packages/prime-cli
 packages/prime-react
+packages/prime-core/.env
