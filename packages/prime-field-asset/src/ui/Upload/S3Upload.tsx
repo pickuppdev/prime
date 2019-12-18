@@ -1,21 +1,21 @@
-import React from 'react'
+import React from 'react';
 import AWS from 'aws-sdk';
-import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
+import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { Icon, Upload } from 'antd';
 import { randomBytes } from 'crypto';
 
 type Props = {
-  file: any,
-  onChange: (info: UploadChangeParam) => void,
-  onPreview: (file: UploadFile) => void,
+  file: any;
+  onChange: (info: UploadChangeParam) => void;
+  onPreview: (file: UploadFile) => void;
   env: {
-    AWS_ACCESS_KEY_ID: string,
-    AWS_SECRET_ACCESS_KEY: string,
-    S3_REGION: string,
-    S3_BUCKET: string,
-    S3_LINK_EXPIRY: string,
-  }
-}
+    AWS_ACCESS_KEY_ID: string;
+    AWS_SECRET_ACCESS_KEY: string;
+    S3_REGION: string;
+    S3_BUCKET: string;
+    ASSET_URL: string;
+  };
+};
 
 export default class S3Upload extends React.PureComponent<Props> {
   public componentDidMount() {
@@ -25,36 +25,41 @@ export default class S3Upload extends React.PureComponent<Props> {
       credentials: new AWS.Credentials({
         accessKeyId: env.AWS_ACCESS_KEY_ID,
         secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
-      })
+      }),
     });
   }
 
   public customRequest = async ({ file, onSuccess }) => {
-    const s3 = new AWS.S3;
-    const { env } = this.props
+    const s3 = new AWS.S3();
+    const { env } = this.props;
 
-    const prefix = randomBytes(20).toString('hex')
-    const fileName = `${prefix}_${file.name}`
-    const data = await s3.upload({
-      Bucket: env.S3_BUCKET,
-      Key: `prime/${fileName}`,
-      ContentType: file.type,
-      ACL: 'public-read',
-      // @ts-ignore
-      Expires: parseInt(env.S3_LINK_EXPIRY),
-      Body: file,
-    }).promise();
+    const prefix = randomBytes(20).toString('hex');
+    const fileName = `${prefix}_${file.name}`;
+    const data = await s3
+      .upload({
+        Bucket: env.S3_BUCKET,
+        Key: `prime/${fileName}`,
+        ContentType: file.type,
+        ACL: 'public-read',
+        Body: file,
+      })
+      .promise();
 
-    onSuccess({
-      url: data.Location,
-    }, {
-      ...file,
-      url: data.Location,
-      imageUrl: data.Location,
-      thumbUrl: data.Location,
-      status: 'done',
-      response: data,
-    })
+    const url = `${env.ASSET_URL}/prime/${fileName}`;
+
+    onSuccess(
+      {
+        url,
+      },
+      {
+        ...file,
+        url,
+        imageUrl: url,
+        thumbUrl: url,
+        status: 'done',
+        response: data,
+      }
+    );
   };
 
   public render() {
@@ -76,6 +81,6 @@ export default class S3Upload extends React.PureComponent<Props> {
           </div>
         )}
       </Upload>
-    )
+    );
   }
 }
