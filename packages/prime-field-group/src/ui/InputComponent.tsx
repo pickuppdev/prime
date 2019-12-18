@@ -111,7 +111,7 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
           <div className="prime-slice-item-actions">
             <Icon
               className="prime-slice-item-button"
-              type="minus"
+              type="close"
               data-key={key}
               onClick={this.onRemoveClick}
             />

@@ -1,4 +1,4 @@
-import { Button, Card, Drawer, Icon, Layout, message, Spin, Tabs } from 'antd';
+import { Button, Card, Drawer, Icon, Layout, message, Modal, Spin, Tabs } from 'antd';
 import { get } from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -290,9 +290,12 @@ export class SchemaDetail extends React.Component<IProps> {
     if (action === 'add') {
       this.onGroupAdd();
     } else if (action === 'remove') {
-      if (confirm('Are you sure?')) {
-        this.contentType!.removeGroup(targetKey);
-      }
+      Modal.confirm({
+        title: 'Are you sure?',
+        onOk: async () => {
+          this.contentType!.removeGroup(targetKey);
+        },
+      });
     }
   };
 

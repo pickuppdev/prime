@@ -1,14 +1,13 @@
 import { ApolloServer } from 'apollo-server-express';
+import { GraphQLResponse, GraphQLRequestContext } from 'apollo-server-types';
 import compression from 'compression';
 import cors from 'cors';
 import express from 'express';
 import { buildSchema } from 'graphql';
 import http from 'http';
 import sofa from 'sofa-api';
-import { ResolverData } from 'type-graphql';
 import { Container } from 'typedi';
 import { useContainer } from 'typeorm';
-import { Context } from './interfaces/Context';
 import { ServerConfig } from './interfaces/ServerConfig';
 import { createExternal } from './modules/external';
 import { createInternal } from './modules/internal';
@@ -94,9 +93,8 @@ export const createServer = async ({ port, connection }: ServerConfig) => {
       return context(ctx);
     },
     schema,
-    // @ts-ignore
-    formatResponse(response: any, resolver: ResolverData<Context>) {
-      Container.reset(resolver.context.requestId);
+    formatResponse(response: GraphQLResponse, requestContext: GraphQLRequestContext) {
+      Container.reset(requestContext.context.requestId);
       return response;
     },
   });

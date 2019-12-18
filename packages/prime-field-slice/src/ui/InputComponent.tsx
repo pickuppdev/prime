@@ -156,7 +156,7 @@ export class InputComponent extends React.Component<PrimeFieldProps, IState> {
                 />
                 <Icon
                   className="prime-slice-item-button"
-                  type="minus"
+                  type="close"
                   data-index={index}
                   onClick={this.onRemoveClick}
                 />
