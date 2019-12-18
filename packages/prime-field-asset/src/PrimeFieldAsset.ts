@@ -20,7 +20,15 @@ export class PrimeFieldAsset extends PrimeField {
     crops: [],
   };
 
-  public static env = ['CLOUDINARY_URL'];
+  public static env = [
+    'STORAGE_VENDOR',
+    'CLOUDINARY_URL',
+    'AWS_ACCESS_KEY_ID',
+    'AWS_SECRET_ACCESS_KEY',
+    'S3_REGION',
+    'S3_BUCKET',
+    'ASSET_URL',
+  ];
 
   public outputType(context: PrimeFieldContext) {
     const options = this.options;
