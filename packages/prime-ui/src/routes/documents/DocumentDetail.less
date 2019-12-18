@@ -74,6 +74,15 @@
     }
   }
 
+  .prime-slice-item-header .ant-form-item-label {
+    line-height: 40px;
+    margin: 0;
+
+    label {
+      position: absolute;
+    }
+  }
+
   .ant-form-item-control {
     line-height: normal;
 
@@ -181,12 +190,12 @@
   }
 
   .prime-slice {
-    margin: -@spacing;
     margin-bottom: 16px;
     background-color: #f0f2f5;
 
     > .ant-form-item-label {
       margin-bottom: 8px;
+      margin-left: 8px;
     }
   }
 
@@ -198,7 +207,7 @@
     border-bottom-right-radius: @borderRadius;
 
     padding-top: @spacing;
-    margin-bottom: @spacing;
+    margin-bottom: 8px;
   }
 
   .prime-slice-spacer-bottom {
@@ -212,8 +221,6 @@
   }
 
   .prime-slice:nth-last-child(2) {
-    margin-bottom: -@spacing;
-
     .prime-slice-spacer-bottom {
       display: none;
     }
@@ -223,17 +230,30 @@
     margin-bottom: 16px;
     border: none;
     border-radius: @borderRadius;
+    margin-left: 3px;
+    margin-right: 3px;
 
     .ant-card-body {
-      padding: @spacing;
-      padding-bottom: 0;
+      padding: 0 @spacing;
     }
+  }
+
+  .prime-slice-item-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+
+      .prime-slice-item-actions {
+        position: relative;
+        top: 0;
+        right: 0;
+      }
   }
 
   .prime-slice-item-actions {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 2px;
+    right: 2px;
 
     z-index: 10;
 
@@ -317,5 +337,9 @@
   .ant-calendar-picker-clear, .ant-calendar-picker-icon {
     width: 16px;
     height: 16px;
+  }
+
+  .hide {
+    display: none;
   }
 }

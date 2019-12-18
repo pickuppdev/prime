@@ -8,6 +8,7 @@ type ISlice = null | {
   id: string;
   title: string;
   fields: any;
+  isExpanded: boolean;
 };
 
 interface IState {
@@ -47,6 +48,7 @@ export class InputComponent extends React.Component<PrimeFieldProps, IState> {
           .map((n: { __inputname: string }, index: number) => ({
             ...this.props.stores.ContentTypes.items.get(n.__inputname),
             index,
+            isExpanded: true,
           })),
       });
     }
@@ -62,6 +64,7 @@ export class InputComponent extends React.Component<PrimeFieldProps, IState> {
       slices: initialValue.map((n: { __inputname: string }, index: number) => ({
         ...stores.ContentTypes.items.get(n.__inputname),
         index,
+        isExpanded: true,
       })),
     });
   }
@@ -71,6 +74,12 @@ export class InputComponent extends React.Component<PrimeFieldProps, IState> {
     const slices = this.state.slices.slice(0);
     slices[index] = null;
     this.setState({ slices });
+  };
+
+  public toggleExpand = (index) => {
+    const slices = this.state.slices;
+    slices[index]!.isExpanded = !slices[index]!.isExpanded;
+    this.setState({ slices })
   };
 
   public onMoveUpClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -98,7 +107,7 @@ export class InputComponent extends React.Component<PrimeFieldProps, IState> {
   public onMenuClick = async (e: { key: string }) => {
     const item = this.props.stores.ContentTypes.items.get(e.key);
     const slices = this.state.slices.slice(0);
-    slices.push({ ...item, index: slices.length });
+    slices.push({ ...item, index: slices.length, isExpanded: true });
     this.setState({ slices });
   };
 
@@ -133,33 +142,46 @@ export class InputComponent extends React.Component<PrimeFieldProps, IState> {
           if (!slice || !slice.id) {
             return null;
           }
-          const { index } = slice as any;
+          const { index, name } = slice as any;
 
           console.log(slice);
 
           return (
             <Card key={`${slice.id}_${index}`} className="prime-slice-item">
-              <div className="prime-slice-item-actions">
-                <Icon
-                  className={`prime-slice-item-button ${idx === 0 ? 'disabled' : ''}`}
-                  type="up"
-                  data-index={idx}
-                  onClick={this.onMoveUpClick}
-                />
-                <Icon
-                  className={`prime-slice-item-button ${
-                    idx === this.state.slices.length - 1 ? 'disabled' : ''
-                  }`}
-                  type="down"
-                  data-index={idx}
-                  onClick={this.onMoveDownClick}
-                />
-                <Icon
-                  className="prime-slice-item-button"
-                  type="close"
-                  data-index={index}
-                  onClick={this.onRemoveClick}
-                />
+              <div className="prime-slice-item-header">
+                <div className="ant-form-item-label">
+                  <label title={name}>{name}</label>
+                </div>
+                <div>
+                  <Icon
+                    className={`prime-slice-item-button ${idx === 0 ? 'disabled' : ''}`}
+                    type="up"
+                    data-index={idx}
+                    onClick={this.onMoveUpClick}
+                  />
+                  <Icon
+                    className={`prime-slice-item-button ${
+                      idx === this.state.slices.length - 1 ? 'disabled' : ''
+                    }`}
+                    type="down"
+                    data-index={idx}
+                    onClick={this.onMoveDownClick}
+                  />
+                </div>
+                <div className="prime-slice-item-actions">
+                  <Icon
+                    className="prime-slice-item-button"
+                    type={!this.state.slices[index]!.isExpanded ? 'caret-right' : 'caret-down'}
+                    data-index={index}
+                    onClick={() => this.toggleExpand(index)}
+                  />
+                  <Icon
+                    className="prime-slice-item-button"
+                    type="close"
+                    data-index={index}
+                    onClick={this.onRemoveClick}
+                  />
+                </div>
               </div>
               {form.getFieldDecorator(`${path}.${index}.__index`, {
                 initialValue: idx,
@@ -167,7 +189,9 @@ export class InputComponent extends React.Component<PrimeFieldProps, IState> {
               {form.getFieldDecorator(`${path}.${index}.__inputname`, {
                 initialValue: slice.id,
               })(<input type="hidden" />)}
-              {slice.fields.fields.filter(noChildren).map((f: any) => this.renderField(f, index))}
+              <div className={this.state.slices[index]!.isExpanded ? '' : 'hide'}>
+                {slice.fields.fields.filter(noChildren).map((f: any) => this.renderField(f, index))}
+              </div>
             </Card>
           );
         })}
