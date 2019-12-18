@@ -27,7 +27,7 @@ export class PrimeFieldAsset extends PrimeField {
     'AWS_SECRET_ACCESS_KEY',
     'S3_REGION',
     'S3_BUCKET',
-    'S3_LINK_EXPIRY',
+    'ASSET_URL',
   ];
 
   public outputType(context: PrimeFieldContext) {
