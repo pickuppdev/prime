@@ -46,7 +46,8 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
   }
 
   public componentWillReceiveProps(nextProps: PrimeFieldProps) {
-    if (!this.props.document && nextProps.document) {
+    if ((!this.props.document && nextProps.document) ||
+      JSON.stringify(this.props.initialValue) !== JSON.stringify(nextProps.initialValue)) {
       this.setState({
         items: getItems(nextProps),
         index: getIndex(nextProps),
@@ -66,6 +67,31 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
   public onRemoveClick = (e: React.MouseEvent<HTMLElement>) => {
     const key = String(e.currentTarget.dataset.key);
     this.remove(key);
+  };
+
+  public onMoveUpClick = (e: React.MouseEvent<HTMLElement>) => {
+    const index = Number(e.currentTarget.dataset.index);
+    const items = this.state.items.slice(0);
+
+    if (index > 0) {
+      const tmp = items[index - 1];
+      items[index - 1] = items[index];
+      items[index] = tmp;
+    }
+
+    this.setState({ items });
+  };
+
+  public onMoveDownClick = (e: React.MouseEvent<HTMLElement>) => {
+    const index = Number(e.currentTarget.dataset.index);
+    const items = this.state.items.slice(0);
+    if (items.length - 1 > index) {
+      const tmp = items[index + 1];
+      items[index + 1] = items[index];
+      items[index] = tmp;
+    }
+
+    this.setState({ items });
   };
 
   public remove = (k: any) => {
@@ -96,8 +122,8 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
     });
   };
 
-  public renderGroupItem = ([key, index]: any) => {
-    const { field } = this.props;
+  public renderGroupItem = ([key, index]: any, position) => {
+    const { field, form, path } = this.props;
     const { fields = [] } = field;
     const repeated = this.options.repeated;
 
@@ -108,15 +134,43 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
     return (
       <Card key={key} className="prime-group-item">
         {repeated && (
-          <div className="prime-slice-item-actions">
-            <Icon
-              className="prime-slice-item-button"
-              type="close"
-              data-key={key}
-              onClick={this.onRemoveClick}
-            />
+          <div className="prime-slice-item-header">
+            <div className="ant-form-item-label"></div>
+            <div>
+              <Icon
+                className={`prime-slice-item-button ${position === 0 ? 'disabled' : ''}`}
+                type="up"
+                data-index={position}
+                onClick={this.onMoveUpClick}
+              />
+              <Icon
+                className={`prime-slice-item-button ${
+                  position === this.state.items.length - 1 ? 'disabled' : ''
+                }`}
+                type="down"
+                data-index={position}
+                onClick={this.onMoveDownClick}
+              />
+            </div>
+            <div className="prime-slice-item-actions">
+              <Icon
+                className="prime-slice-item-button"
+                type={!this.state.items[position]!.isExpanded ? 'caret-right' : 'caret-down'}
+                data-index={position}
+                // onClick={() => this.toggleExpand(index)}
+              />
+              <Icon
+                className="prime-slice-item-button"
+                type="close"
+                data-key={key}
+                onClick={this.onRemoveClick}
+              />
+            </div>
           </div>
         )}
+        {form.getFieldDecorator(`${path}.${position}.__index`, {
+          initialValue: index,
+        })(<input type="hidden" />)}
         {fields.map((f: any) => this.renderField(f, key, index))}
       </Card>
     );

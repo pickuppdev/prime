@@ -191,7 +191,7 @@ export class DocumentsDetail extends React.Component<IProps> {
 
             Object.entries(parsed).forEach(([key, value]) => {
               if (Array.isArray(value) && value.length > 0) {
-                if (value[0].__index) {
+                if (typeof value[0].__index === 'number') {
                   value.sort((a, b) => Number(a.__index) - Number(b.__index));
                 }
               }
