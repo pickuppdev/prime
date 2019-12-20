@@ -20,11 +20,13 @@ const initialToken = uuid.v4();
 const getItems = ({ initialValue, field }: PrimeFieldProps) => {
   const options = { ...field.defaultOptions, ...field.options };
   if (!options.repeated) {
-    return [[initialToken, 0]];
+    // [token, index, expand status]
+    return [[initialToken, 0, true]];
   }
 
   if (Array.isArray(initialValue)) {
-    return initialValue.map((_, index) => [uuid.v4(), index]);
+    // [token, index, expand status]
+    return initialValue.map((_, index) => [uuid.v4(), index, true]);
   }
 
   return [];
@@ -103,9 +105,16 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
   public add = () => {
     const { items, index } = this.state;
     this.setState({
-      items: [...items, [uuid.v4(), index]],
+      items: [...items, [uuid.v4(), index, true]],
       index: index + 1,
     });
+  };
+
+  public toggleExpand = (e: React.MouseEvent<HTMLElement>) => {
+    const index = Number(e.currentTarget.dataset.index);
+    const items = this.state.items.slice(0);
+    items[index][2] = !items[index][2];
+    this.setState({ items })
   };
 
   public renderField = (field: any, key: string, index: number) => {
@@ -135,7 +144,7 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
       <Card key={key} className="prime-group-item">
         {repeated && (
           <div className="prime-slice-item-header">
-            <div className="ant-form-item-label"></div>
+            <div className="ant-form-item-label" />
             <div>
               <Icon
                 className={`prime-slice-item-button ${position === 0 ? 'disabled' : ''}`}
@@ -155,9 +164,9 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
             <div className="prime-slice-item-actions">
               <Icon
                 className="prime-slice-item-button"
-                type={!this.state.items[position]!.isExpanded ? 'caret-right' : 'caret-down'}
+                type={!this.state.items[position]![2] ? 'caret-right' : 'caret-down'}
                 data-index={position}
-                // onClick={() => this.toggleExpand(index)}
+                onClick={this.toggleExpand}
               />
               <Icon
                 className="prime-slice-item-button"
@@ -171,7 +180,9 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
         {form.getFieldDecorator(`${path}.${position}.__index`, {
           initialValue: index,
         })(<input type="hidden" />)}
-        {fields.map((f: any) => this.renderField(f, key, index))}
+        <div className={this.state.items[position]![2] ? '' : 'hide'}>
+          {fields.map((f: any) => this.renderField(f, key, index))}
+        </div>
       </Card>
     );
   };
