@@ -49,7 +49,7 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
 
   public componentWillReceiveProps(nextProps: PrimeFieldProps) {
     if ((!this.props.document && nextProps.document) ||
-      JSON.stringify(this.props.initialValue) !== JSON.stringify(nextProps.initialValue)) {
+      this.props.initialValue !== nextProps.initialValue) {
       this.setState({
         items: getItems(nextProps),
         index: getIndex(nextProps),
