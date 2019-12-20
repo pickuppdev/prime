@@ -189,13 +189,17 @@ export class DocumentsDetail extends React.Component<IProps> {
 
             const parsed = parse(values);
 
-            Object.entries(parsed).forEach(([key, value]) => {
-              if (Array.isArray(value) && value.length > 0) {
-                if (value[0].__index) {
-                  value.sort((a, b) => Number(a.__index) - Number(b.__index));
+            const sort = (values: any) => {
+              Object.entries(values).forEach(([key, value]) => {
+                if (Array.isArray(value) && value.length > 0) {
+                  Object.values(value).forEach(item => sort(item))
+                  if (typeof value[0].__index === 'number') {
+                    value.sort((a, b) => Number(a.__index) - Number(b.__index));
+                  }
                 }
-              }
-            });
+              });
+            };
+            sort(parsed)
 
             // Update values
             if (this.contentEntry) {

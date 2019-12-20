@@ -20,11 +20,13 @@ const initialToken = uuid.v4();
 const getItems = ({ initialValue, field }: PrimeFieldProps) => {
   const options = { ...field.defaultOptions, ...field.options };
   if (!options.repeated) {
-    return [[initialToken, 0]];
+    // [token, index, expand status]
+    return [[initialToken, 0, true]];
   }
 
   if (Array.isArray(initialValue)) {
-    return initialValue.map((_, index) => [uuid.v4(), index]);
+    // [token, index, expand status]
+    return initialValue.map((_, index) => [uuid.v4(), index, true]);
   }
 
   return [];
@@ -46,7 +48,8 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
   }
 
   public componentWillReceiveProps(nextProps: PrimeFieldProps) {
-    if (!this.props.document && nextProps.document) {
+    if ((!this.props.document && nextProps.document) ||
+      this.props.initialValue !== nextProps.initialValue) {
       this.setState({
         items: getItems(nextProps),
         index: getIndex(nextProps),
@@ -68,6 +71,32 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
     this.remove(key);
   };
 
+  public onMoveUpClick = (e: React.MouseEvent<HTMLElement>) => {
+    const index = Number(e.currentTarget.dataset.index);
+    const items = this.state.items.slice(0);
+
+    if (index <= 0) return
+
+    const tmp = items[index - 1];
+    items[index - 1] = items[index];
+    items[index] = tmp;
+
+    this.setState({ items });
+  };
+
+  public onMoveDownClick = (e: React.MouseEvent<HTMLElement>) => {
+    const index = Number(e.currentTarget.dataset.index);
+    const items = this.state.items.slice(0);
+
+    if (items.length - 1 <= index) return
+
+    const tmp = items[index + 1];
+    items[index + 1] = items[index];
+    items[index] = tmp;
+
+    this.setState({ items });
+  };
+
   public remove = (k: any) => {
     const items = this.state.items.slice(0);
     items.splice(items.findIndex(n => n[0] === k), 1);
@@ -77,9 +106,16 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
   public add = () => {
     const { items, index } = this.state;
     this.setState({
-      items: [...items, [uuid.v4(), index]],
+      items: [...items, [uuid.v4(), index, true]],
       index: index + 1,
     });
+  };
+
+  public toggleExpand = (e: React.MouseEvent<HTMLElement>) => {
+    const index = Number(e.currentTarget.dataset.index);
+    const items = this.state.items.slice(0);
+    items[index][2] = !items[index][2];
+    this.setState({ items })
   };
 
   public renderField = (field: any, key: string, index: number) => {
@@ -96,8 +132,8 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
     });
   };
 
-  public renderGroupItem = ([key, index]: any) => {
-    const { field } = this.props;
+  public renderGroupItem = ([key, index]: any, position) => {
+    const { field, form, path } = this.props;
     const { fields = [] } = field;
     const repeated = this.options.repeated;
 
@@ -108,16 +144,46 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
     return (
       <Card key={key} className="prime-group-item">
         {repeated && (
-          <div className="prime-slice-item-actions">
-            <Icon
-              className="prime-slice-item-button"
-              type="close"
-              data-key={key}
-              onClick={this.onRemoveClick}
-            />
+          <div className="prime-slice-item-header">
+            <div className="ant-form-item-label" />
+            <div>
+              <Icon
+                className={`prime-slice-item-button ${position === 0 ? 'disabled' : ''}`}
+                type="up"
+                data-index={position}
+                onClick={this.onMoveUpClick}
+              />
+              <Icon
+                className={`prime-slice-item-button ${
+                  position === this.state.items.length - 1 ? 'disabled' : ''
+                }`}
+                type="down"
+                data-index={position}
+                onClick={this.onMoveDownClick}
+              />
+            </div>
+            <div className="prime-slice-item-actions">
+              <Icon
+                className="prime-slice-item-button"
+                type={!this.state.items[position]![2] ? 'caret-right' : 'caret-down'}
+                data-index={position}
+                onClick={this.toggleExpand}
+              />
+              <Icon
+                className="prime-slice-item-button"
+                type="close"
+                data-key={key}
+                onClick={this.onRemoveClick}
+              />
+            </div>
           </div>
         )}
-        {fields.map((f: any) => this.renderField(f, key, index))}
+        {form.getFieldDecorator(`${path}.${position}.__index`, {
+          initialValue: index,
+        })(<input type="hidden" />)}
+        <div className={this.state.items[position]![2] ? '' : 'hide'}>
+          {fields.map((f: any) => this.renderField(f, key, index))}
+        </div>
       </Card>
     );
   };
