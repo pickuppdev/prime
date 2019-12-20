@@ -75,11 +75,11 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
     const index = Number(e.currentTarget.dataset.index);
     const items = this.state.items.slice(0);
 
-    if (index > 0) {
-      const tmp = items[index - 1];
-      items[index - 1] = items[index];
-      items[index] = tmp;
-    }
+    if (index <= 0) return
+
+    const tmp = items[index - 1];
+    items[index - 1] = items[index];
+    items[index] = tmp;
 
     this.setState({ items });
   };
@@ -87,11 +87,12 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps, any> {
   public onMoveDownClick = (e: React.MouseEvent<HTMLElement>) => {
     const index = Number(e.currentTarget.dataset.index);
     const items = this.state.items.slice(0);
-    if (items.length - 1 > index) {
-      const tmp = items[index + 1];
-      items[index + 1] = items[index];
-      items[index] = tmp;
-    }
+
+    if (items.length - 1 <= index) return
+
+    const tmp = items[index + 1];
+    items[index + 1] = items[index];
+    items[index] = tmp;
 
     this.setState({ items });
   };
