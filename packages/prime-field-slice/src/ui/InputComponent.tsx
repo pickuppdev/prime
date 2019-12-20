@@ -34,6 +34,11 @@ export class InputComponent extends React.Component<PrimeFieldProps, IState> {
 
   public values: any = [];
 
+  get options() {
+    const { field } = this.props;
+    return { ...field.defaultOptions, ...field.options };
+  }
+
   public componentDidMount() {
     this.load().catch((err: Error) => {
       console.error(err); // tslint:disable-line no-console
@@ -132,6 +137,8 @@ export class InputComponent extends React.Component<PrimeFieldProps, IState> {
       </Menu>
     );
 
+    const sliceAmount = this.state.slices.filter(i => !!i).length;
+
     return (
       <div className="prime-slice">
         <div className="prime-slice-spacer-top" />
@@ -196,15 +203,17 @@ export class InputComponent extends React.Component<PrimeFieldProps, IState> {
           );
         })}
         <div style={{ textAlign: 'center' }}>
-          <Dropdown placement="bottomCenter" overlay={menu} trigger={['click']}>
-            <Button
-              size="large"
-              shape="circle"
-              // block={true}
-              icon="plus"
-              className="prime-slice-add"
-            />
-          </Dropdown>
+          {(this.options.multiple || sliceAmount === 0) && (
+            <Dropdown placement="bottomCenter" overlay={menu} trigger={['click']}>
+              <Button
+                size="large"
+                shape="circle"
+                // block={true}
+                icon="plus"
+                className="prime-slice-add"
+              />
+            </Dropdown>
+          )}
         </div>
         <div className="prime-slice-spacer-bottom" />
       </div>
