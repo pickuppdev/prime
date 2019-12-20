@@ -95,7 +95,11 @@ export class DocumentTransformer {
       }
 
       if (field.type === 'slice') {
-        if (options.multiple && Array.isArray(value)) {
+        if (!options.multiple && Array.isArray(value)) {
+          value = [value.shift()];
+        }
+
+        if (Array.isArray(value)) {
           value = value.sort((a: any, b: any): number => {
             return a.__index - b.__index;
           });
