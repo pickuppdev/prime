@@ -22,4 +22,3 @@ packages/prime-ui/build
 packages/*/junit.xml
 
 Dockerfile
-package.deploy.json
