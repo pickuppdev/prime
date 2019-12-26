@@ -4,11 +4,11 @@ import { ClickParam } from 'antd/lib/menu';
 import { get } from 'lodash';
 import React from 'react';
 import Cropper from 'react-easy-crop';
-import { UploadChangeParam } from "antd/lib/upload";
-import { UploadFile } from "antd/lib/upload/interface";
+import { UploadChangeParam } from 'antd/lib/upload';
+import { UploadFile } from 'antd/lib/upload/interface';
 
-import CloudinaryUpload from './Upload/CloudinaryUpload'
-import S3Upload from './Upload/S3Upload'
+import CloudinaryUpload from './Upload/CloudinaryUpload';
+import S3Upload from './Upload/S3Upload';
 
 const CROP_SIZE = 800;
 
@@ -27,10 +27,8 @@ const getInitialFile = (value?: { url: string } | string) => {
     uid: '-1',
     status: 'done',
     url: value.url,
-    imageUrl: value.url.replace(/\.[a-z]{3,4}$/, '.png'),
-    thumbUrl: value.url
-      .replace('/image/upload/', '/image/upload/w_100,h_100,c_fill/')
-      .replace(/\.[a-z]{3,4}$/, '.png'),
+    imageUrl: value.url,
+    thumbUrl: value.url.replace('/image/upload/', '/image/upload/w_100,h_100,c_fill/'),
     width: null,
     height: null,
   };
@@ -73,10 +71,9 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps> {
       file = files[0] as PrimeUploadFile;
       if (file.status === 'done' && file.response) {
         file.url = file.response.url;
-        file.imageUrl = file.response.url.replace(/\.[a-z]{3,4}$/, '.png');
+        file.imageUrl = file.response.url;
         file.thumbUrl = file.response.url
-          .replace('/image/upload/', '/image/upload/w_100,h_100,c_fill/')
-          .replace(/\.[a-z]{3,4}$/, '.png');
+          .replace('/image/upload/', '/image/upload/w_100,h_100,c_fill/');
       }
     }
 
@@ -196,7 +193,7 @@ export class InputComponent extends React.PureComponent<PrimeFieldProps> {
 
   public renderUpload() {
     const { file } = this.state;
-    const { env } = this.props.stores.Settings
+    const { env } = this.props.stores.Settings;
     if (env.STORAGE_VENDOR && env.STORAGE_VENDOR === 's3') {
       return (
         <S3Upload
