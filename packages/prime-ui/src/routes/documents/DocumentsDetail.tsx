@@ -173,9 +173,17 @@ export class DocumentsDetail extends React.Component<IProps> {
                 return Object.entries(vals || {}).reduce((acc: any, [key, value]) => {
                   if (isObject(value)) {
                     const entries = Object.entries(value || {});
-                    const indexes = entries.filter(([k]) => Number.isInteger(Number(k)));
+                    let indexes = entries.filter(([k]) => Number.isInteger(Number(k)));
                     const isArrayLike = indexes.length > 0;
                     if (isArrayLike) {
+                      if (typeof indexes[0][1].__index === 'number') {
+                        // remove all elements that have only __index attribute
+                        indexes = indexes.filter(
+                          item =>
+                            !(typeof item[1].__index === 'number') ||
+                            Object.keys(item[1]).length > 1
+                        );
+                      }
                       acc[key] = indexes.map(([k, v]) => parse(v));
                       return acc;
                     }
