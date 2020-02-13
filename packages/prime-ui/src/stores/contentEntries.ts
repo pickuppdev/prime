@@ -12,11 +12,12 @@ export const ContentEntries = types
     error: false,
   })
   .actions(self => {
-    const loadByContentType = flow(function*(contentTypeId: string): any {
+    const loadByContentType = flow(function*(contentTypeId: string, locale: string): any {
       const { data } = yield client.query({
         query: CONTENT_ENTRIES_BY_CONTENT_TYPE,
         variables: {
           contentTypeId,
+          locale,
         },
       });
       return data.allDocuments.edges.map(({ node }: any) => ContentEntry.create({ ...node }));

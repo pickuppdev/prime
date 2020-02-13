@@ -14,7 +14,7 @@ export interface IDocumentFormProps extends FormComponentProps {
   onSave(e: React.MouseEvent<any> | React.FormEvent<any>): void;
 }
 
-function renderInputField({ field, path, initialValue, form, entry }: any) {
+function renderInputField({ field, path, initialValue, form, entry, locale }: any) {
   const fieldsField = get(fields, field.type);
 
   if (fieldsField && fieldsField.InputComponent) {
@@ -27,6 +27,7 @@ function renderInputField({ field, path, initialValue, form, entry }: any) {
         stores={stores}
         path={path}
         document={entry}
+        locale={locale}
         renderField={renderInputField}
         initialValue={initialValue}
       />
@@ -59,6 +60,7 @@ export class BaseDocumentForm extends React.Component<IDocumentFormProps, any> {
       path: field.name,
       entry: this.props.entry,
       initialValue: get(this.props, `entry.data.${field.name}`),
+      locale: this.props.entry && this.props.entry.locale,
     });
   };
 
