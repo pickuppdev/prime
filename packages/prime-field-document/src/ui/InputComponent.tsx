@@ -34,7 +34,7 @@ export class InputComponent extends React.Component<PrimeFieldProps, IState> {
   }
 
   public async load() {
-    const { field, stores } = this.props;
+    const { field, stores, locale } = this.props;
 
     this.setState({ loading: true });
 
@@ -46,7 +46,7 @@ export class InputComponent extends React.Component<PrimeFieldProps, IState> {
     const contentTypes = await Promise.all(
       contentTypeIds.map(async (contentTypeId: string) => {
         const contentType = await stores.ContentTypes.loadById(contentTypeId);
-        const items = await stores.ContentEntries.loadByContentType(contentType.id);
+        const items = await stores.ContentEntries.loadByContentType(contentType.id, locale);
 
         return { contentType, items };
       })

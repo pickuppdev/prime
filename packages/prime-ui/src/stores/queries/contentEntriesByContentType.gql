@@ -1,5 +1,5 @@
-query contentEntriesByContentType($contentTypeId: ID) {
-  allDocuments(first: 1000, filter: { schemaId: $contentTypeId }) {
+query contentEntriesByContentType($contentTypeId: ID, $locale: String) {
+  allDocuments(first: 1000, filter: { schemaId: $contentTypeId, locale: $locale }) {
     totalCount
     edges {
       node {

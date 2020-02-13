@@ -16,5 +16,6 @@ export interface PrimeFieldProps {
   children?: any;
   document?: Document;
   path: string;
+  locale: string;
   renderField(args: PrimeFieldProps): React.ReactNode;
 }
