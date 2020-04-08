@@ -18,7 +18,7 @@ export const connect = (url = process.env.DATABASE_URL) => {
       path.join(__dirname, '..', 'entities', '*.js'),
     ],
     ssl,
-    synchronize: process.env.NODE_ENV !== 'production',
+    synchronize: process.env.NODE_ENV === 'production' ? process.env.SYNC === 'true' : true,
     logger: 'debug',
   }).then(connection => {
     const driver = connection.driver as PostgresDriver;
