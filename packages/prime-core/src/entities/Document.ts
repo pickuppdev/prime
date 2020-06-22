@@ -8,6 +8,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 import { Release } from './Release';
 import { Schema } from './Schema';
@@ -21,6 +22,7 @@ export class Document {
 
   @Column({ length: 10 })
   @Field(type => ID)
+  @Index()
   public documentId: string;
 
   @Column({ default: 'en' })
