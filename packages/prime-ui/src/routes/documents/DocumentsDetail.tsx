@@ -59,6 +59,9 @@ export class DocumentsDetail extends React.Component<IProps> {
   public locale = Settings.masterLocale;
 
   @observable
+  public duplicateLocal = Settings.masterLocale;
+
+  @observable
   public options: IOptions = {};
 
   @observable
@@ -86,6 +89,7 @@ export class DocumentsDetail extends React.Component<IProps> {
 
     if (opts.locale) {
       this.locale = Settings.locales.find(({ id }) => id === opts.locale) || Settings.masterLocale;
+      this.duplicateLocal = this.locale;
     }
 
     if (entryId) {
@@ -200,14 +204,14 @@ export class DocumentsDetail extends React.Component<IProps> {
             const sort = (values: any) => {
               Object.entries(values).forEach(([key, value]) => {
                 if (Array.isArray(value) && value.length > 0) {
-                  Object.values(value).forEach(item => sort(item))
+                  Object.values(value).forEach(item => sort(item));
                   if (typeof value[0].__index === 'number') {
                     value.sort((a, b) => Number(a.__index) - Number(b.__index));
                   }
                 }
               });
             };
-            sort(parsed)
+            sort(parsed);
 
             // Update values
             if (this.contentEntry) {
@@ -218,13 +222,15 @@ export class DocumentsDetail extends React.Component<IProps> {
                 this.contentEntry = (await ContentEntries.create({
                   schemaId: this.contentType.id,
                   data: parsed,
-                  locale: this.locale.id,
+                  locale: locale || this.locale.id,
                   releaseId,
                   documentId,
                 })) as Instance<typeof ContentEntry>;
                 if (this.contentEntry) {
                   this.props.history.replace(
-                    `/documents/doc/${this.contentEntry.documentId}/${this.opts()}`
+                    `/documents/doc/${this.contentEntry.documentId}/${this.opts({
+                      locale: locale || this.locale.id,
+                    })}`
                   );
                 }
                 resolve();
@@ -296,7 +302,7 @@ export class DocumentsDetail extends React.Component<IProps> {
   public onDuplicate = (e: any) => {
     this.contentEntry = null;
     try {
-      this.save();
+      this.save({ locale: this.duplicateLocal.id });
       message.success('Document was duplicated', 1);
     } catch (err) {
       message.error('Could not duplicate document');
@@ -317,6 +323,11 @@ export class DocumentsDetail extends React.Component<IProps> {
     } else {
       history.push(`/documents/create/${this.opts({ locale })}`);
     }
+  };
+
+  public onDuplicateLocaleClick = (e: any) => {
+    const locale = e.key;
+    this.duplicateLocal = Settings.locales.find(({ id }) => id === locale) || this.locale;
   };
 
   public onPreviewPress = async (e: any) => {
@@ -378,6 +389,19 @@ export class DocumentsDetail extends React.Component<IProps> {
     );
   }
 
+  get duplicateLocalesMenu() {
+    return (
+      <Menu onClick={this.onDuplicateLocaleClick} selectedKeys={[this.duplicateLocal.id]}>
+        {Settings.locales.map(({ id, flag, name }) => (
+          <Menu.Item key={id}>
+            <span className={`flagstrap-icon flagstrap-${flag}`} style={{ marginRight: 8 }} />
+            {name}
+          </Menu.Item>
+        ))}
+      </Menu>
+    );
+  }
+
   public renderPreview(loading: boolean) {
     if (Settings.previews.length === 0) {
       return null;
@@ -412,6 +436,9 @@ export class DocumentsDetail extends React.Component<IProps> {
   public render() {
     const { contentEntry, contentType, options } = this;
 
+    const localeDuplicate = ['LandingBlocks'].includes(
+      contentType && contentType.name ? contentType.name : ''
+    );
     const backUrl = `/documents/by/${this.opts({ type: null })}`;
 
     return (
@@ -546,9 +573,23 @@ export class DocumentsDetail extends React.Component<IProps> {
                 </Popconfirm>
               )}
               {contentEntry && (
-                <Button onClick={this.onDuplicate} style={{ marginBottom: 8 }} block>
-                  Duplicate
-                </Button>
+                <div style={{ display: 'flex' }}>
+                  {localeDuplicate && (
+                    <Dropdown overlay={this.duplicateLocalesMenu} trigger={['click']}>
+                      <Button href="#" type="default" style={{ marginRight: 8 }}>
+                        <span
+                          className={`flagstrap-icon flagstrap-${this.duplicateLocal.flag}`}
+                          style={{ marginRight: 8 }}
+                        />
+                        {this.duplicateLocal.name}
+                        <Icon type="up" className="anticon-down" />
+                      </Button>
+                    </Dropdown>
+                  )}
+                  <Button onClick={this.onDuplicate} style={{ marginBottom: 8 }} block>
+                    Duplicate
+                  </Button>
+                </div>
               )}
               {contentEntry && (
                 <Popconfirm
