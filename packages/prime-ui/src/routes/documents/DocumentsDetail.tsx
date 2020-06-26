@@ -436,9 +436,7 @@ export class DocumentsDetail extends React.Component<IProps> {
   public render() {
     const { contentEntry, contentType, options } = this;
 
-    const localeDuplicate = ['LandingBlocks'].includes(
-      contentType && contentType.name ? contentType.name : ''
-    );
+    const localeDuplicate = contentType ? contentType.name === 'LandingBlocks' : false;
     const backUrl = `/documents/by/${this.opts({ type: null })}`;
 
     return (
