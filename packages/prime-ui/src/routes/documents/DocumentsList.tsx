@@ -52,6 +52,21 @@ const GET_CONTENT_ENTRIES = gql`
         }
       }
     }
+    allUsers {
+      edges {
+        node {
+          id
+          meta {
+            profile
+          }
+          username
+          emails {
+            address
+            verified
+          }
+        }
+      }
+    }
     allDocuments(
       first: $first
       skip: $skip
@@ -281,21 +296,18 @@ export const DocumentsList = ({ match, history }: any) => {
             dataIndex: 'user.id',
             width: '120px',
             sorter: true,
-            filters: get(data, 'allUsers', []).map(({ id, email }: any) => ({
-              text: email,
-              value: id,
-            })),
             filteredValue: userId,
             filterMultiple: false,
             align: 'center' as any,
             render(text: string, record: any) {
-              if (!record.user) {
+              const user = get(data, 'allUsers.edges', []).find(({ node } : { node: any }) => node.id === record.userId )
+              if (!user) {
                 return <Avatar icon="user" />;
               }
-              const { firstname, lastname, email } = record.user;
+              const { firstname, lastname } = get(user, 'node.meta.profile', {});
               return (
-                <Tooltip title={`${firstname} ${lastname} (${email})`}>
-                  <Avatar style={{ backgroundColor: stringToColor(email) }}>
+                <Tooltip title={`${firstname} ${lastname}`}>
+                  <Avatar style={{ backgroundColor: stringToColor(`${firstname}${lastname}`)}}>
                     {firstname.substring(0, 1)}
                     {lastname.substring(0, 1)}
                   </Avatar>
