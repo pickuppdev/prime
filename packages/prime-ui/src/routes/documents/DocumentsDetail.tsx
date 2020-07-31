@@ -301,8 +301,14 @@ export class DocumentsDetail extends React.Component<IProps> {
 
   public onDuplicate = (e: any) => {
     this.contentEntry = null;
+    const { match } = this.props;
+    const { params } = match;
     try {
-      this.save({ locale: this.duplicateLocal.id });
+      const args: any = { locale: this.duplicateLocal.id };
+      if (this.duplicateLocal.id !== this.locale.id) {
+        args.documentId = params.entryId;
+      }
+      this.save(args);
       message.success('Document was duplicated', 1);
     } catch (err) {
       message.error('Could not duplicate document');
