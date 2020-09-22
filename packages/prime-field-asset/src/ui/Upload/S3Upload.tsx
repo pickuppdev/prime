@@ -42,6 +42,7 @@ export default class S3Upload extends React.PureComponent<Props> {
         ContentType: file.type,
         ACL: 'public-read',
         Body: file,
+        CacheControl: 'public, max-age=31536000, immutable',
       })
       .promise();
 
